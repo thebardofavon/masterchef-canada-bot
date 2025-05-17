@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import "./App.css";
 
 const chefs = ["Alvin Leung", "Michael Bonacini", "Claudio Aprile"];
 
@@ -11,7 +12,7 @@ const speak = (text, chef) => {
   if (chef === "Alvin Leung") {
     speech.voice = voices.find(voice => voice.name.includes("Google UK English Male"));
   } else if (chef === "Michael Bonacini") {
-    speech.voice = voices.find(voice => voice.name.includes("Google UK English Female"));
+    speech.voice = voices.find(voice => voice.name.includes("Google UK English Male"));
   } else {
     speech.voice = voices.find(voice => voice.name.includes("Google US English Male"));
   }
@@ -54,33 +55,63 @@ function App() {
   };
 
   return (
-    <div className="container">
-      <h1>👨‍🍳 MasterChef Canada Chatbot</h1>
-      
-      <select onChange={(e) => setChef(e.target.value)} value={chef}>
-        {chefs.map((c) => (
-          <option key={c} value={c}>{c}</option>
-        ))}
-      </select>
-
-      <div className="chatbox">
-        {chat.map((msg, index) => (
-          <p key={index} className={msg.sender === "You" ? "user" : "bot"}>
-            <strong>{msg.sender}:</strong> {msg.text}
-          </p>
-        ))}
+    <div className="app-container">
+      <div className="header">
+        <h1>👨‍🍳 MasterChef Canada Chatbot</h1>
+        <p className="subtitle">Chat with your favorite MasterChef Canada judges!</p>
       </div>
+      
+      <div className="main-content">
+        <div className="controls">
+          <select 
+            className="chef-select"
+            onChange={(e) => setChef(e.target.value)} 
+            value={chef}
+          >
+            {chefs.map((c) => (
+              <option key={c} value={c}>{c}</option>
+            ))}
+          </select>
+          
+          <button 
+            className="mute-button"
+            onClick={() => setIsMuted(!isMuted)}
+          >
+            {isMuted ? "🔊 Unmute" : "🔇 Mute"}
+          </button>
+        </div>
 
-      <input
-        type="text"
-        value={message}
-        onChange={(e) => setMessage(e.target.value)}
-        placeholder="Type a message..."
-      />
-      <button onClick={sendMessage}>Send</button>
-      <button onClick={() => setIsMuted(!isMuted)}>
-        {isMuted ? "🔊 Unmute" : "🔇 Mute"}
-      </button>
+        <div className="chat-container">
+          <div className="chatbox">
+            {chat.map((msg, index) => (
+              <div 
+                key={index} 
+                className={`message ${msg.sender === "You" ? "user" : "bot"}`}
+              >
+                <div className="message-content">
+                  <strong>{msg.sender}:</strong> {msg.text}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="input-container">
+            <input
+              type="text"
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              placeholder="Ask your favorite chef a question..."
+              onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
+            />
+            <button 
+              className="send-button"
+              onClick={sendMessage}
+            >
+              Send
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
