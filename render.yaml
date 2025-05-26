@@ -2,8 +2,9 @@ services:
   - type: web
     name: masterchef-canada-bot-backend
     env: node
-    buildCommand: cd backend && npm install
-    startCommand: cd backend && npm start
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: npm start
     envVars:
       - key: OPENROUTER_API_KEY
         sync: false 
