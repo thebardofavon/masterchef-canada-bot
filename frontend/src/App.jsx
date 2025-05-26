@@ -41,7 +41,9 @@ function App() {
     setChat([...chat, userMessage]);
 
     try {
-      const res = await axios.post(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/chat`, { message, chef });
+      // const res = await axios.post(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/chat`, { message, chef });
+      const res = await axios.post(`http://localhost:5000/chat`, { message, chef });
+
       const botMessage = { sender: chef, text: res.data.reply };
 
       setChat([...chat, userMessage, botMessage]);
