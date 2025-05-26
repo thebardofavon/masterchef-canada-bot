@@ -14,6 +14,11 @@ const chefStyles = {
   "Claudio Aprile": "Encouraging, insightful, constructive, friendly tone."
 };
 
+// Health check endpoint
+app.get("/", (req, res) => {
+  res.json({ status: "ok", message: "Server is running" });
+});
+
 app.post("/chat", async (req, res) => {
   const { message, chef } = req.body;
   const chefStyle = chefStyles[chef] || "Professional, yet witty and insightful.";
@@ -40,14 +45,11 @@ app.post("/chat", async (req, res) => {
 
   res.json({ reply: response.data.choices[0].message.content });
 
-
-
-
 } catch (error) {
   console.error("OpenRouter API Error:", error.response?.data || error.message);
   res.status(500).json({ error: "API request failed." });
 }
 });
 
-
-app.listen(5000, () => console.log("Server running on port 5000"));
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
