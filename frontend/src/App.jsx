@@ -36,14 +36,14 @@ function App() {
 
   const sendMessage = async () => {
     if (!message.trim()) return;
-
+    console.log("[DEBUG] message entered: ", message);
     const userMessage = { sender: "You", text: message };
     setChat([...chat, userMessage]);
 
     try {
-      // const res = await axios.post(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/chat`, { message, chef });
-      const res = await axios.post(`http://localhost:5000/chat`, { message, chef });
-
+      const res = await axios.post(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/chat`, { message, chef });
+      // const res = await axios.post(`http://localhost:5000/chat`, { message, chef });
+      console.log("[DEBUG] response: ", res.data);
       const botMessage = { sender: chef, text: res.data.reply };
 
       setChat([...chat, userMessage, botMessage]);
